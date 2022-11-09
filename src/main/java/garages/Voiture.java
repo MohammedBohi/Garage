@@ -29,8 +29,9 @@ public class Voiture {
 	 */
 	public void entreAuGarage(Garage g) throws Exception {
 		// Et si la voiture est déjà dans un garage ?
-
+		if (this.estDansUnGarage()==true) throw new Exception("la voiture est déjà dans un garage");
 		Stationnement s = new Stationnement(this, g);
+
 		myStationnements.add(s);
 	}
 
@@ -41,26 +42,36 @@ public class Voiture {
 	 * @throws java.lang.Exception si la voiture n'est pas dans un garage
 	 */
 	public void sortDuGarage() throws Exception {
-		throw new UnsupportedOperationException("Pas encore implémenté");
-		// TODO: Implémenter cette méthode
+		if(this.estDansUnGarage()==false) throw new Exception("la voiture n'est pas dans un garage");
+
+
 		// Trouver le dernier stationnement de la voiture
 		// Terminer ce stationnement
+		this.myStationnements.get(myStationnements.size()-1).terminer();
 	}
 
 	/**
 	 * @return l'ensemble des garages visités par cette voiture
 	 */
 	public Set<Garage> garagesVisites() {
-		// TODO: Implémenter cette méthode
-		throw new UnsupportedOperationException("Pas encore implémenté");
+		Set<Garage> listeGarage=new HashSet<Garage>();
+		for (Stationnement stationnement: this.myStationnements){
+			listeGarage.add(stationnement.getGarage());
+		}
+		return listeGarage;
 	}
 
 	/**
 	 * @return vrai si la voiture est dans un garage, faux sinon
 	 */
 	public boolean estDansUnGarage() {
-		// TODO: Implémenter cette méthode
-		throw new UnsupportedOperationException("Pas encore implémenté");
+
+		if (this.myStationnements.isEmpty()){
+			return false;
+		}
+		else {
+			 return this.myStationnements.get(myStationnements.size()-1).estEnCours();
+		}
 		// Vrai si le dernier stationnement est en cours
 	}
 
@@ -81,8 +92,16 @@ public class Voiture {
 	 * @param out l'endroit où imprimer (ex: System.out)
 	 */
 	public void imprimeStationnements(PrintStream out) {
-		// TODO: Implémenter cette méthode
-		throw new UnsupportedOperationException("Pas encore implémenté");
+
+			for (Garage garage : garagesVisites()) {
+				out.println(garage);
+				for (Stationnement stat : myStationnements) {
+					if (stat.getGarage().equals(garage)) {
+						out.println("\t"+stat);
+
+					}
+				}
+			}
 	}
 
 }

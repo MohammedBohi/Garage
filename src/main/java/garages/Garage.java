@@ -5,7 +5,7 @@ public class Garage {
 	private String name;
 
 	public Garage(String s) {
-		name = s;
+		this.name = s;
 	}
 
 	public String getName() {
